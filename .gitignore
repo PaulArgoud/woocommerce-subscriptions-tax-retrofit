@@ -1,0 +1,23 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Compiled translations (generated from .po files)
+*.mo
+
+# WordPress
+wp-config.php
+
+# Claude Code
+CLAUDE.md
+ARCHITECTURE.md
+
+# Packages
+node_modules/
+vendor/

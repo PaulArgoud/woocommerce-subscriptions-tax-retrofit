@@ -1,0 +1,942 @@
+# English translation for WooCommerce Subscription Tax Retrofit
+# Copyright (C) 2024-2026 Paul ARGOUD
+# This file is distributed under the same license as the WooCommerce Subscription Tax Retrofit plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce Subscription Tax Retrofit 1.4.0\n"
+"Report-Msgid-Bugs-To: https://paul.argoud.net\n"
+"POT-Creation-Date: 2026-02-08 10:00+0000\n"
+"PO-Revision-Date: 2026-02-08 10:00+0000\n"
+"Last-Translator: Paul ARGOUD <contact@paul.argoud.net>\n"
+"Language-Team: English\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Manual 1.0\n"
+
+#. Dependencies check (early)
+#, php-format
+msgid "PHP 7.4 ou supérieur est requis (version actuelle : %s)"
+msgstr "PHP 7.4 or higher is required (current version: %s)"
+
+msgid "Contactez votre hébergeur pour mettre à jour PHP."
+msgstr "Contact your hosting provider to update PHP."
+
+msgid "WooCommerce doit être installé et activé."
+msgstr "WooCommerce must be installed and activated."
+
+#, php-format
+msgid "Installez WooCommerce depuis <a href=\"%s\">cette page</a>."
+msgstr "Install WooCommerce from <a href=\"%s\">this page</a>."
+
+msgid "WooCommerce Subscriptions doit être installé et activé."
+msgstr "WooCommerce Subscriptions must be installed and activated."
+
+msgid "Installez et activez l'extension WooCommerce Subscriptions."
+msgstr "Install and activate the WooCommerce Subscriptions extension."
+
+msgid "WooCommerce Subscription Tax Retrofit"
+msgstr "WooCommerce Subscription Tax Retrofit"
+
+msgid "Le plugin ne peut pas se charger car certaines dépendances sont manquantes :"
+msgstr "The plugin cannot load because some dependencies are missing:"
+
+#. Data processing
+msgid "Sans nom"
+msgstr "Unnamed"
+
+msgid "Dépendances manquantes (WooCommerce ou WooCommerce Subscriptions)"
+msgstr "Missing dependencies (WooCommerce or WooCommerce Subscriptions)"
+
+msgid "Permission refusée"
+msgstr "Permission denied"
+
+msgid "Une mise à jour est déjà en cours."
+msgstr "An update is already in progress."
+
+msgid "Taux de TVA introuvable dans WooCommerce. Configurez un taux dans WooCommerce → Réglages → Taxes."
+msgstr "Tax rate not found in WooCommerce. Configure a rate in WooCommerce → Settings → Tax."
+
+#. Security / permissions
+msgid "Accès non autorisé"
+msgstr "Unauthorized access"
+
+msgid "Erreur de sécurité"
+msgstr "Security error"
+
+msgid "Erreur de sécurité : nonce invalide"
+msgstr "Security error: invalid nonce"
+
+msgid "Vous n'avez pas les permissions nécessaires pour effectuer cette action."
+msgstr "You do not have the necessary permissions to perform this action."
+
+#. CSV export
+msgid "Impossible d'exporter : dépendances manquantes (WooCommerce ou WooCommerce Subscriptions)"
+msgstr "Cannot export: missing dependencies (WooCommerce or WooCommerce Subscriptions)"
+
+msgid "Erreur"
+msgstr "Error"
+
+msgid "Aucune donnée à exporter."
+msgstr "No data to export."
+
+msgid "ID Abonnement"
+msgstr "Subscription ID"
+
+msgid "Statut"
+msgstr "Status"
+
+msgid "ID Client"
+msgstr "Customer ID"
+
+msgid "Email Client"
+msgstr "Customer Email"
+
+msgid "Total Original (TTC)"
+msgstr "Original Total (incl. tax)"
+
+msgid "Nouveau Total HT"
+msgstr "New Total excl. tax"
+
+msgid "Nouvelle TVA"
+msgstr "New Tax"
+
+msgid "Nouveau Total TTC"
+msgstr "New Total incl. tax"
+
+msgid "Date Modification"
+msgstr "Modification Date"
+
+#. Display results
+msgid "En cours"
+msgstr "Running"
+
+msgid "SIMULATION"
+msgstr "SIMULATION"
+
+msgid "MISE À JOUR"
+msgstr "UPDATE"
+
+msgid "abonnements traités"
+msgstr "subscriptions processed"
+
+msgid "Total :"
+msgstr "Total:"
+
+msgid "Batch :"
+msgstr "Batch:"
+
+msgid "Mis à jour :"
+msgstr "Updated:"
+
+msgid "Ignorés :"
+msgstr "Skipped:"
+
+msgid "Erreurs :"
+msgstr "Errors:"
+
+#, php-format
+msgid "Alertes de tolérance (%d)"
+msgstr "Tolerance warnings (%d)"
+
+msgid "Ces abonnements ont été IGNORÉS"
+msgstr "These subscriptions have been SKIPPED"
+
+#, php-format
+msgid "car ils présentent des écarts d'arrondi >= %s€ :"
+msgstr "because they have rounding differences >= %s€:"
+
+msgid "Que faire ?"
+msgstr "What to do?"
+
+msgid "Ces écarts sont dus aux arrondis de TVA"
+msgstr "These differences are due to VAT rounding"
+
+#, php-format
+msgid "Ils sont comptés dans %1$s, pas dans %2$s"
+msgstr "They are counted in %1$s, not in %2$s"
+
+msgid "Si vous acceptez ces écarts minimes (1 centime), augmentez la tolérance à 0.02€ dans les paramètres"
+msgstr "If you accept these small differences (1 cent), increase the tolerance to 0.02€ in the settings"
+
+msgid "Lot suivant"
+msgstr "Next batch"
+
+msgid "Traitement en cours, ne fermez pas cette page..."
+msgstr "Processing in progress, do not close this page..."
+
+msgid "Restant :"
+msgstr "Remaining:"
+
+msgid "abonnements"
+msgstr "subscriptions"
+
+msgid "Temps estimé :"
+msgstr "Estimated time:"
+
+msgid "Continuer"
+msgstr "Continue"
+
+msgid "Continuation automatique dans"
+msgstr "Automatic continuation in"
+
+msgid "Détails :"
+msgstr "Details:"
+
+msgid "Erreurs"
+msgstr "Errors"
+
+msgid "Export"
+msgstr "Export"
+
+#, php-format
+msgid "CSV simulation (%d)"
+msgstr "CSV simulation (%d)"
+
+msgid "Prochaines étapes :"
+msgstr "Next steps:"
+
+msgid "Téléchargez le CSV"
+msgstr "Download the CSV"
+
+msgid "Vérifiez 2-3 abonnements"
+msgstr "Check 2-3 subscriptions"
+
+msgid "Consultez les logs WooCommerce"
+msgstr "Check the WooCommerce logs"
+
+msgid "Vérifiez Stripe"
+msgstr "Check Stripe"
+
+msgid "Désactivez ce plugin"
+msgstr "Deactivate this plugin"
+
+msgid "CSV Simulation"
+msgstr "CSV Simulation"
+
+#. Admin page - dependencies
+msgid "Tax Retrofit - Dépendances manquantes"
+msgstr "Tax Retrofit - Missing Dependencies"
+
+msgid "Impossible d'accéder à cette page. Veuillez installer et activer WooCommerce et WooCommerce Subscriptions."
+msgstr "Cannot access this page. Please install and activate WooCommerce and WooCommerce Subscriptions."
+
+#. Admin page - reset
+msgid "Migration réinitialisée"
+msgstr "Migration reset"
+
+msgid "Toutes les données de migration ont été effacées. Vous pouvez relancer depuis le début."
+msgstr "All migration data has been erased. You can restart from the beginning."
+
+#. Admin page - form messages
+msgid "Taux de TVA :"
+msgstr "Tax rate:"
+
+#, php-format
+msgid "Taux de TVA invalide (ID: %d)"
+msgstr "Invalid tax rate (ID: %d)"
+
+msgid "Date :"
+msgstr "Date:"
+
+msgid "Format de date invalide (AAAA-MM-JJ)"
+msgstr "Invalid date format (YYYY-MM-DD)"
+
+msgid "Enregistré :"
+msgstr "Saved:"
+
+msgid "Erreur :"
+msgstr "Error:"
+
+msgid "Vous devez sélectionner au moins un statut valide"
+msgstr "You must select at least one valid status"
+
+msgid "La tolérance doit être un nombre entre 0.001 et 1€"
+msgstr "The tolerance must be a number between 0.001 and 1€"
+
+msgid "La tolérance doit être un nombre valide"
+msgstr "The tolerance must be a valid number"
+
+msgid "Paramètres enregistrés"
+msgstr "Settings saved"
+
+msgid "CSV supprimé"
+msgstr "CSV deleted"
+
+msgid "Faire une sauvegarde complète avant utilisation"
+msgstr "Make a complete backup before use"
+
+#. Admin page - tax rate error
+msgid "Configuration requise : Taux de TVA"
+msgstr "Required configuration: Tax rate"
+
+msgid "Le plugin ne peut pas trouver le taux de TVA dans WooCommerce."
+msgstr "The plugin cannot find the tax rate in WooCommerce."
+
+msgid "Taux FR trouvés dans votre base de données :"
+msgstr "FR rates found in your database:"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Pays"
+msgstr "Country"
+
+msgid "Taux"
+msgstr "Rate"
+
+msgid "Nom"
+msgstr "Name"
+
+msgid "Classe"
+msgstr "Class"
+
+msgid "CORRESPOND"
+msgstr "MATCHES"
+
+msgid "différence:"
+msgstr "difference:"
+
+msgid "Taux recherché :"
+msgstr "Searched rate:"
+
+msgid "Méthode de comparaison :"
+msgstr "Comparison method:"
+
+#, php-format
+msgid "Aucun taux FR trouvé dans la table %s"
+msgstr "No FR rate found in table %s"
+
+msgid "Comment configurer un taux de TVA :"
+msgstr "How to configure a tax rate:"
+
+msgid "Réglages"
+msgstr "Settings"
+
+msgid "Taxes"
+msgstr "Tax"
+
+msgid "Activez les taxes si ce n'est pas déjà fait"
+msgstr "Enable taxes if not already done"
+
+msgid "Cliquez sur 'Taux standard' (ou créez une classe de taxe)"
+msgstr "Click on 'Standard rates' (or create a tax class)"
+
+msgid "Ajoutez un taux avec :"
+msgstr "Add a rate with:"
+
+msgid "Pays :"
+msgstr "Country:"
+
+msgid "ou votre pays"
+msgstr "or your country"
+
+msgid "Taux % :"
+msgstr "Rate %:"
+
+msgid "Nom :"
+msgstr "Name:"
+
+msgid "ou autre"
+msgstr "or other"
+
+msgid "Enregistrez"
+msgstr "Save"
+
+msgid "Rafraîchissez cette page"
+msgstr "Refresh this page"
+
+#, php-format
+msgid "Taux recherché actuellement : %s%% pour la France"
+msgstr "Currently searched rate: %s%% for France"
+
+msgid "Si votre taux est différent, vous pouvez le modifier avec le filtre"
+msgstr "If your rate is different, you can change it with the filter"
+
+msgid "ex: 0.055 pour 5.5%"
+msgstr "e.g.: 0.055 for 5.5%"
+
+#, php-format
+msgid "Consultez les %s"
+msgstr "Check the %s"
+
+msgid "logs WooCommerce"
+msgstr "WooCommerce logs"
+
+msgid "pour voir :"
+msgstr "to see:"
+
+msgid "Les taux de TVA disponibles dans votre base"
+msgstr "The tax rates available in your database"
+
+msgid "Les détails de la recherche effectuée"
+msgstr "The details of the search performed"
+
+#. Admin page - already executed
+msgid "Déjà exécuté"
+msgstr "Already executed"
+
+msgid "Abonnements :"
+msgstr "Subscriptions:"
+
+#, php-format
+msgid "Export CSV disponible (%d lignes)"
+msgstr "CSV export available (%d rows)"
+
+msgid "Télécharger CSV"
+msgstr "Download CSV"
+
+msgid "Supprimer le CSV actuel ? Cela ne supprimera pas les modifications déjà effectuées sur vos abonnements."
+msgstr "Delete the current CSV? This will not undo modifications already made to your subscriptions."
+
+msgid "Nettoyer CSV"
+msgstr "Clean CSV"
+
+msgid "Réinitialiser complètement"
+msgstr "Reset completely"
+
+msgid "ATTENTION : Action irréversible"
+msgstr "WARNING: Irreversible action"
+
+msgid "Cette action va :"
+msgstr "This action will:"
+
+msgid "Effacer l'historique d'exécution"
+msgstr "Erase the execution history"
+
+msgid "Supprimer les données CSV"
+msgstr "Delete CSV data"
+
+msgid "Réinitialiser tous les compteurs"
+msgstr "Reset all counters"
+
+msgid "Permettre de relancer la migration depuis le début"
+msgstr "Allow restarting the migration from the beginning"
+
+msgid "À utiliser uniquement si :"
+msgstr "Use only if:"
+
+msgid "La première migration a échoué"
+msgstr "The first migration failed"
+
+msgid "Vous devez retraiter les abonnements"
+msgstr "You need to reprocess the subscriptions"
+
+msgid "Vous testez sur un environnement de staging"
+msgstr "You are testing on a staging environment"
+
+msgid "CONFIRMATION FINALE : Cette action va EFFACER toutes les données de migration. Êtes-vous ABSOLUMENT certain de vouloir réinitialiser ?"
+msgstr "FINAL CONFIRMATION: This action will ERASE all migration data. Are you ABSOLUTELY sure you want to reset?"
+
+msgid "RÉINITIALISER COMPLÈTEMENT"
+msgstr "RESET COMPLETELY"
+
+#. Admin page - interrupted migration
+msgid "Migration interrompue détectée"
+msgstr "Interrupted migration detected"
+
+#, php-format
+msgid "Une migration précédente a été interrompue à %1$d%% (%2$d / %3$d abonnements traités)."
+msgstr "A previous migration was interrupted at %1$d%% (%2$d / %3$d subscriptions processed)."
+
+msgid "Voulez-vous reprendre où vous vous étiez arrêté ?"
+msgstr "Do you want to resume where you left off?"
+
+#, php-format
+msgid "Reprendre la migration (%d%%)"
+msgstr "Resume migration (%d%%)"
+
+#, php-format
+msgid "Êtes-vous sûr de vouloir recommencer depuis le début ? La progression actuelle (%d%%) sera perdue."
+msgstr "Are you sure you want to start over? Current progress (%d%%) will be lost."
+
+msgid "Recommencer depuis le début"
+msgstr "Start over from the beginning"
+
+#, php-format
+msgid "Dernière activité : il y a %s"
+msgstr "Last activity: %s ago"
+
+#. Admin page - configuration form
+msgid "Configuration"
+msgstr "Configuration"
+
+msgid "Taux de TVA"
+msgstr "Tax rate"
+
+msgid "Aucun taux de TVA configuré"
+msgstr "No tax rate configured"
+
+msgid "Vous devez d'abord configurer des taux de TVA dans WooCommerce :"
+msgstr "You must first configure tax rates in WooCommerce:"
+
+msgid "Configurer les taux de TVA"
+msgstr "Configure tax rates"
+
+msgid "Sélectionnez le taux de TVA à appliquer lors de la migration."
+msgstr "Select the tax rate to apply during migration."
+
+msgid "Taux actuel :"
+msgstr "Current rate:"
+
+msgid "Date limite passage TVA"
+msgstr "VAT transition date limit"
+
+msgid "Les abonnements dépourvus de TVA et créés avant ou le cette date seront migrés."
+msgstr "Subscriptions without VAT created on or before this date will be migrated."
+
+msgid "Date actuelle :"
+msgstr "Current date:"
+
+msgid "détectée automatiquement"
+msgstr "automatically detected"
+
+msgid "Abonnements sans TVA détectés :"
+msgstr "Subscriptions without VAT detected:"
+
+msgid "Premier :"
+msgstr "First:"
+
+msgid "Dernier :"
+msgstr "Last:"
+
+msgid "Recommandation :"
+msgstr "Recommendation:"
+
+#, php-format
+msgid "Utilisez la date du dernier abonnement sans TVA (%s)"
+msgstr "Use the date of the last subscription without VAT (%s)"
+
+msgid "La date actuelle correspond au dernier abonnement sans TVA"
+msgstr "The current date matches the last subscription without VAT"
+
+msgid "Attention :"
+msgstr "Warning:"
+
+#, php-format
+msgid "Un abonnement sans TVA a été détecté à la date %s"
+msgstr "A subscription without VAT was detected at date %s"
+
+#, php-format
+msgid "La date actuelle (%s) est différente."
+msgstr "The current date (%s) is different."
+
+#, php-format
+msgid "Utiliser la date recommandée (%s)"
+msgstr "Use the recommended date (%s)"
+
+msgid "Enregistrer"
+msgstr "Save"
+
+#. Admin page - advanced settings
+msgid "Paramètres avancés"
+msgstr "Advanced settings"
+
+msgid "Statuts d'abonnement à traiter"
+msgstr "Subscription statuses to process"
+
+msgid "Actif (active)"
+msgstr "Active (active)"
+
+msgid "En attente (on-hold)"
+msgstr "On hold (on-hold)"
+
+msgid "Annulation en attente (pending-cancel)"
+msgstr "Pending cancellation (pending-cancel)"
+
+msgid "En attente de paiement (pending)"
+msgstr "Pending payment (pending)"
+
+msgid "Annulé (cancelled)"
+msgstr "Cancelled (cancelled)"
+
+msgid "Expiré (expired)"
+msgstr "Expired (expired)"
+
+msgid "Basculé (switched)"
+msgstr "Switched (switched)"
+
+msgid "Sélectionnez les statuts d'abonnement à inclure dans la migration."
+msgstr "Select the subscription statuses to include in the migration."
+
+msgid "Recommandé :"
+msgstr "Recommended:"
+
+msgid "Conseil : N'incluez pas \"cancelled\" ou \"expired\" sauf si nécessaire."
+msgstr "Tip: Do not include \"cancelled\" or \"expired\" unless necessary."
+
+msgid "Tolérance d'arrondi (€)"
+msgstr "Rounding tolerance (€)"
+
+msgid "Écart maximum accepté entre le total TTC original et le recalculé (HT + TVA)."
+msgstr "Maximum accepted difference between original total (incl. tax) and recalculated (excl. tax + VAT)."
+
+msgid "Valeur actuelle :"
+msgstr "Current value:"
+
+msgid "Valeur par défaut :"
+msgstr "Default value:"
+
+msgid "1 centime"
+msgstr "1 cent"
+
+msgid "Plage valide :"
+msgstr "Valid range:"
+
+msgid "à"
+msgstr "to"
+
+msgid "1 centime (0.01€) convient à la plupart des cas."
+msgstr "1 cent (0.01€) is suitable for most cases."
+
+msgid "Enregistrer les paramètres"
+msgstr "Save settings"
+
+msgid "Note :"
+msgstr "Note:"
+
+msgid "Les filtres PHP sont toujours disponibles pour les configurations avancées. Les valeurs ici configurées ont la priorité."
+msgstr "PHP filters are still available for advanced configurations. Values configured here take priority."
+
+#. Admin page - subscription count
+msgid "Abonnements concernés"
+msgstr "Affected subscriptions"
+
+msgid "Calcul en cours..."
+msgstr "Calculating..."
+
+msgid "abonnement(s)"
+msgstr "subscription(s)"
+
+msgid "Statuts :"
+msgstr "Statuses:"
+
+#, php-format
+msgid "créés jusqu'au %s"
+msgstr "created up to %s"
+
+msgid "modifiable via filtre"
+msgstr "changeable via filter"
+
+#. Admin page - how it works
+msgid "Fonctionnement"
+msgstr "How it works"
+
+msgid "Recalcul"
+msgstr "Recalculation"
+
+#, php-format
+msgid "Pour chaque abonnement créé jusqu'au %s :"
+msgstr "For each subscription created up to %s:"
+
+msgid "Montant HT = Total TTC ÷"
+msgstr "Amount excl. tax = Total incl. tax ÷"
+
+msgid "TVA = Total TTC - Montant HT"
+msgstr "VAT = Total incl. tax - Amount excl. tax"
+
+msgid "Total TTC reste identique"
+msgstr "Total incl. tax remains the same"
+
+#, php-format
+msgid "Exemple (TVA %s%%) :"
+msgstr "Example (VAT %s%%):"
+
+msgid "Tolérance d'arrondi"
+msgstr "Rounding tolerance"
+
+msgid "La tolérance définit l'écart maximum accepté entre le total TTC original et le recalculé (HT + TVA)."
+msgstr "The tolerance defines the maximum accepted difference between the original total (incl. tax) and the recalculated (excl. tax + VAT)."
+
+msgid "Pour modifier :"
+msgstr "To change:"
+
+msgid "Utilisez la section \"Paramètres avancés\" ci-dessus."
+msgstr "Use the \"Advanced settings\" section above."
+
+msgid "Cas où ajuster la tolérance :"
+msgstr "When to adjust the tolerance:"
+
+msgid "Certaines passerelles de paiement ou imports peuvent générer des écarts > 0.01€"
+msgstr "Some payment gateways or imports may generate differences > 0.01€"
+
+msgid "Données migrées d'autres systèmes avec arrondis différents"
+msgstr "Data migrated from other systems with different rounding"
+
+msgid "Abonnements créés en devises étrangères puis convertis"
+msgstr "Subscriptions created in foreign currencies then converted"
+
+msgid "Plus le montant est grand, plus les arrondis cumulés peuvent être importants"
+msgstr "The larger the amount, the more cumulative rounding can be significant"
+
+msgid "Une tolérance trop élevée peut masquer de véritables erreurs de calcul. Ne l'augmentez que si vous comprenez l'origine des écarts."
+msgstr "A tolerance that is too high can mask real calculation errors. Only increase it if you understand the origin of the differences."
+
+msgid "Note pour développeurs :"
+msgstr "Note for developers:"
+
+msgid "Le filtre reste disponible mais la valeur configurée via l'interface a la priorité."
+msgstr "The filter is still available but the value configured via the interface takes priority."
+
+#. Admin page - actions list
+msgid "Actions"
+msgstr "Actions"
+
+#, php-format
+msgid "Identifie abonnements %1$s créés jusqu'au %2$s"
+msgstr "Identifies subscriptions %1$s created up to %2$s"
+
+msgid "Supprime/recrée chaque ligne avec HT et TVA"
+msgstr "Deletes/recreates each line with excl. tax and VAT"
+
+msgid "Préserve métadonnées"
+msgstr "Preserves metadata"
+
+msgid "Utilise tax_rate_id (Stripe compatible)"
+msgstr "Uses tax_rate_id (Stripe compatible)"
+
+#, php-format
+msgid "Vérifie total TTC identique (tolérance : %s€)"
+msgstr "Verifies identical total incl. tax (tolerance: %s€)"
+
+msgid "Logs + notes sur abonnements"
+msgstr "Logs + notes on subscriptions"
+
+msgid "Alertes détaillées en cas d'écarts de tolérance"
+msgstr "Detailed alerts for tolerance differences"
+
+#. Admin page - simulation
+#, php-format
+msgid "Testez sans modifier la base. Lots de %d abonnements."
+msgstr "Test without modifying the database. Batches of %d subscriptions."
+
+#. Admin page - real execution
+msgid "EXÉCUTION RÉELLE"
+msgstr "REAL EXECUTION"
+
+msgid "Modifiera définitivement la base de données !"
+msgstr "Will permanently modify the database!"
+
+msgid "AVANT DE LANCER, VÉRIFIEZ :"
+msgstr "BEFORE LAUNCHING, VERIFY:"
+
+msgid "Sauvegarde COMPLÈTE de la base de données"
+msgstr "COMPLETE backup of the database"
+
+msgid "Simulation lancée ci-dessus (sans erreur)"
+msgstr "Simulation launched above (no errors)"
+
+#, php-format
+msgid "Date vérifiée (%s)"
+msgstr "Date verified (%s)"
+
+msgid "Aucune alerte de tolérance n'apparaît"
+msgstr "No tolerance warnings appear"
+
+msgid "Test sur environnement de staging (si possible)"
+msgstr "Test on staging environment (if possible)"
+
+msgid "CONFIRMATION FINALE : Sauvegarde complète faite ? Simulation lancée sans erreur ? Aucune alerte de tolérance ? Date vérifiée ? Cette action va MODIFIER votre base de données. Cliquez OK pour confirmer."
+msgstr "FINAL CONFIRMATION: Complete backup done? Simulation launched without errors? No tolerance warnings? Date verified? This action will MODIFY your database. Click OK to confirm."
+
+msgid "LANCER LA MIGRATION"
+msgstr "LAUNCH MIGRATION"
+
+#. Admin page - technical info
+msgid "Infos techniques :"
+msgstr "Technical info:"
+
+msgid "Version :"
+msgstr "Version:"
+
+msgid "Auteur :"
+msgstr "Author:"
+
+msgid "Date limite :"
+msgstr "Date limit:"
+
+msgid "modifiable"
+msgstr "editable"
+
+msgid "TVA :"
+msgstr "VAT:"
+
+#, php-format
+msgid "ID taux: %d, configuré via interface"
+msgstr "Rate ID: %d, configured via interface"
+
+msgid "filtre"
+msgstr "filter"
+
+msgid "Lots :"
+msgstr "Batches:"
+
+msgid "Tolérance :"
+msgstr "Tolerance:"
+
+msgid "configurée via interface"
+msgstr "configured via interface"
+
+msgid "valeur par défaut ou filtre"
+msgstr "default value or filter"
+
+msgid "configurés via interface"
+msgstr "configured via interface"
+
+msgid "valeurs par défaut ou filtre"
+msgstr "default values or filter"
+
+msgid "Non trouvé"
+msgstr "Not found"
+
+msgid "Configurez un taux de TVA dans"
+msgstr "Configure a tax rate in"
+
+#, php-format
+msgid "Taux recherché : %s%%"
+msgstr "Searched rate: %s%%"
+
+msgid "modifiable via filtre"
+msgstr "changeable via filter"
+
+#, php-format
+msgid "Consultez les %s pour voir les taux disponibles"
+msgstr "Check the %s to see the available rates"
+
+#. Activation notice
+msgid "WooCommerce Subscription Tax Retrofit activé !"
+msgstr "WooCommerce Subscription Tax Retrofit activated!"
+
+#, php-format
+msgid "Allez dans %s"
+msgstr "Go to %s"
+
+msgid "WooCommerce → Tax Retrofit"
+msgstr "WooCommerce → Tax Retrofit"
+
+msgid "Faites une sauvegarde complète avant toute migration."
+msgstr "Make a complete backup before any migration."
+
+#. WP-CLI: config command
+msgid "Dépendances manquantes : WooCommerce et/ou WooCommerce Subscriptions"
+msgstr "Missing dependencies: WooCommerce and/or WooCommerce Subscriptions"
+
+#, php-format
+msgid "Taux de TVA configuré : %s%%"
+msgstr "Tax rate configured: %s%%"
+
+#, php-format
+msgid "Taux %s%% non trouvé dans WooCommerce"
+msgstr "Rate %s%% not found in WooCommerce"
+
+msgid "Taux invalide (doit être entre 0.1 et 100)"
+msgstr "Invalid rate (must be between 0.1 and 100)"
+
+#, php-format
+msgid "Date limite configurée : %s"
+msgstr "Date limit configured: %s"
+
+msgid "Date invalide (format requis : YYYY-MM-DD)"
+msgstr "Invalid date (required format: YYYY-MM-DD)"
+
+#, php-format
+msgid "Tolérance configurée : %s€"
+msgstr "Tolerance configured: %s€"
+
+msgid "Tolérance invalide (doit être entre 0.001 et 1.0)"
+msgstr "Invalid tolerance (must be between 0.001 and 1.0)"
+
+#, php-format
+msgid "Statuts configurés : %s"
+msgstr "Statuses configured: %s"
+
+msgid "Aucun statut valide fourni. Valides : active, on-hold, pending-cancel, pending, cancelled, expired, switched"
+msgstr "No valid status provided. Valid: active, on-hold, pending-cancel, pending, cancelled, expired, switched"
+
+msgid "Configuration actuelle :"
+msgstr "Current configuration:"
+
+msgid "Date limite"
+msgstr "Date limit"
+
+msgid "Tolérance"
+msgstr "Tolerance"
+
+msgid "Statuts"
+msgstr "Statuses"
+
+#. WP-CLI: simulate command
+msgid "Dépendances manquantes"
+msgstr "Missing dependencies"
+
+#, php-format
+msgid "Taux %s%% non trouvé dans WooCommerce, utilisation du taux configuré"
+msgstr "Rate %s%% not found in WooCommerce, using configured rate"
+
+msgid "Lancement de la simulation..."
+msgstr "Starting simulation..."
+
+#, php-format
+msgid "Batch offset %d : %d à migrer, %d ignorés, %d erreurs"
+msgstr "Batch offset %d: %d to migrate, %d skipped, %d errors"
+
+msgid "Simulation terminée"
+msgstr "Simulation completed"
+
+msgid "À migrer"
+msgstr "To migrate"
+
+msgid "Ignorés"
+msgstr "Skipped"
+
+#, php-format
+msgid "%d alertes de tolérance"
+msgstr "%d tolerance warnings"
+
+#. WP-CLI: migrate command
+msgid "ARRÊT : Vous devez confirmer avoir fait une sauvegarde avec --yes-i-have-a-backup"
+msgstr "STOP: You must confirm you have made a backup with --yes-i-have-a-backup"
+
+msgid "MIGRATION RÉELLE - LES DONNÉES VONT ÊTRE MODIFIÉES"
+msgstr "REAL MIGRATION - DATA WILL BE MODIFIED"
+
+msgid "Êtes-vous ABSOLUMENT SÛR ? Tapez \"OUI\" pour continuer : "
+msgstr "Are you ABSOLUTELY SURE? Type \"OUI\" to continue: "
+
+msgid "Migration annulée"
+msgstr "Migration cancelled"
+
+msgid "Lancement de la migration..."
+msgstr "Starting migration..."
+
+#, php-format
+msgid "Batch offset %d : %d mis à jour, %d ignorés, %d erreurs"
+msgstr "Batch offset %d: %d updated, %d skipped, %d errors"
+
+msgid "Migration terminée"
+msgstr "Migration completed"
+
+msgid "Mis à jour"
+msgstr "Updated"
+
+#. WP-CLI: stats command
+msgid "Statistiques de migration :"
+msgstr "Migration statistics:"
+
+msgid "Offset actuel"
+msgstr "Current offset"
+
+msgid "Dernière activité"
+msgstr "Last activity"
+
+msgid "Aucune"
+msgstr "None"
+
+msgid "Arrêté"
+msgstr "Stopped"
+
+#. WP-CLI: reset command
+msgid "Migration complètement réinitialisée"
+msgstr "Migration completely reset"

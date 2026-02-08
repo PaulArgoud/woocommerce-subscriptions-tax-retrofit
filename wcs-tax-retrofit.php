@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Subscriptions Tax Retrofit
  * Plugin URI: https://paul.argoud.net
  * Description: Migre vos abonnements WooCommerce Subscriptions de TTC (sans TVA) vers HT + TVA, en conservant le prix TTC payé par vos clients. Indispensable après un passage au régime de TVA.
- * Version: 1.4.0
+ * Version: 1.4.1
  * Author: Paul ARGOUD
  * Author URI: https://paul.argoud.net
  * Requires at least: 5.0
@@ -115,7 +115,7 @@ function wc_tax_retrofit_check_dependencies(): bool {
     return class_exists('WooCommerce') && function_exists('wcs_get_subscriptions');
 }
 
-define('WC_TAX_RETROFIT_VERSION', '1.4.0');
+define('WC_TAX_RETROFIT_VERSION', '1.4.1');
 define('WC_TAX_RETROFIT_BATCH_SIZE', 100);
 define('WC_TAX_RETROFIT_TOLERANCE', 0.01);
 
@@ -409,6 +409,10 @@ function wc_tax_retrofit_get_date_limit(): string {
 }
 
 function wc_tax_retrofit_count_subscriptions(): int {
+    static $cached = null;
+    if ($cached !== null) {
+        return $cached;
+    }
     if (!function_exists('wcs_get_subscriptions')) return 0;
     $count_args = array(
         'status' => wc_tax_retrofit_get_subscription_statuses(),
@@ -416,7 +420,8 @@ function wc_tax_retrofit_count_subscriptions(): int {
         'return' => 'ids',
         'limit' => -1,
     );
-    return count(wcs_get_subscriptions($count_args));
+    $cached = count(wcs_get_subscriptions($count_args));
+    return $cached;
 }
 
 function wc_tax_retrofit_ajax_count(): void {
@@ -446,6 +451,14 @@ function wc_tax_retrofit_detect_no_tax_date($order = 'DESC') {
         return $cache[$order];
     }
 
+    // Cache transient pour éviter les N+1 queries à chaque chargement admin
+    $transient_key = 'wc_tax_retrofit_detect_date_' . strtolower($order);
+    $transient_value = get_transient($transient_key);
+    if ($transient_value !== false) {
+        $cache[$order] = $transient_value === '' ? null : $transient_value;
+        return $cache[$order];
+    }
+
     if (!function_exists('wcs_get_subscriptions')) {
         return null;
     }
@@ -463,10 +476,11 @@ function wc_tax_retrofit_detect_no_tax_date($order = 'DESC') {
         $items = $subscription->get_items();
         foreach ($items as $item) {
             $taxes = $item->get_taxes();
-            if (empty($taxes['total']) || array_sum($taxes['total']) == 0) {
+            if (empty($taxes['total']) || abs(array_sum($taxes['total'])) < 0.001) {
                 $date_created = $subscription->get_date_created();
                 if ($date_created) {
                     $cache[$order] = $date_created->format('Y-m-d');
+                    set_transient($transient_key, $cache[$order], 5 * MINUTE_IN_SECONDS);
                     return $cache[$order];
                 }
             }
@@ -474,6 +488,7 @@ function wc_tax_retrofit_detect_no_tax_date($order = 'DESC') {
     }
 
     $cache[$order] = null;
+    set_transient($transient_key, '', 5 * MINUTE_IN_SECONDS);
     return null;
 }
 
@@ -496,11 +511,17 @@ function wc_tax_retrofit_validate_subscription($subscription): bool {
 }
 
 function wc_tax_retrofit_get_tax_rate_id() {
+    static $cached = null;
+    static $cached_resolved = false;
+    if ($cached_resolved) {
+        return $cached;
+    }
+
     global $wpdb;
-    
+
     $target_rate = wc_tax_retrofit_get_selected_rate() * 100; // Ex: 0.20 → 20
     $table = $wpdb->prefix . 'woocommerce_tax_rates';
-    
+
     wc_tax_retrofit_log(sprintf('Recherche taux de TVA : %.2f%%', $target_rate));
     
     // Étape 1 : Recherche directe en base de données (plus fiable)
@@ -517,30 +538,34 @@ function wc_tax_retrofit_get_tax_rate_id() {
     ));
     
     if ($result) {
-        wc_tax_retrofit_log(sprintf('✓ Tax rate trouvé (DB direct FR): ID=%s, Taux=%s%%', 
+        wc_tax_retrofit_log(sprintf('✓ Tax rate trouvé (DB direct FR): ID=%s, Taux=%s%%',
             $result->tax_rate_id, $result->tax_rate));
-        return $result->tax_rate_id;
+        $cached = $result->tax_rate_id;
+        $cached_resolved = true;
+        return $cached;
     }
-    
+
     wc_tax_retrofit_log('Aucun taux FR trouvé, recherche dans tous les pays...');
-    
+
     // Étape 2 : Chercher dans tous les pays
     $result = $wpdb->get_row($wpdb->prepare(
-        "SELECT tax_rate_id, tax_rate_country, tax_rate, tax_rate_name 
-         FROM {$table} 
-         WHERE tax_rate_class = %s 
+        "SELECT tax_rate_id, tax_rate_country, tax_rate, tax_rate_name
+         FROM {$table}
+         WHERE tax_rate_class = %s
          AND ABS(tax_rate - %f) < 0.01
-         ORDER BY 
+         ORDER BY
             CASE WHEN tax_rate_country = 'FR' THEN 0 ELSE 1 END,
-            tax_rate_priority ASC 
+            tax_rate_priority ASC
          LIMIT 1",
         '', $target_rate
     ));
-    
+
     if ($result) {
-        wc_tax_retrofit_log(sprintf('✓ Tax rate trouvé (DB tous pays): ID=%s, Pays=%s, Taux=%s%%', 
+        wc_tax_retrofit_log(sprintf('✓ Tax rate trouvé (DB tous pays): ID=%s, Pays=%s, Taux=%s%%',
             $result->tax_rate_id, $result->tax_rate_country, $result->tax_rate));
-        return $result->tax_rate_id;
+        $cached = $result->tax_rate_id;
+        $cached_resolved = true;
+        return $cached;
     }
     
     // Étape 3 : Essayer via l'API WooCommerce (peut échouer si appelé trop tôt)
@@ -563,9 +588,11 @@ function wc_tax_retrofit_get_tax_rate_id() {
                     $rate['country'] ?? 'N/A'));
                 
                 if (isset($rate['rate']) && abs($rate['rate'] - $target_rate) < 0.01) {
-                    wc_tax_retrofit_log(sprintf('✓ Tax rate trouvé (API WC_Tax): ID=%s, Rate=%s%%', 
+                    wc_tax_retrofit_log(sprintf('✓ Tax rate trouvé (API WC_Tax): ID=%s, Rate=%s%%',
                         $rate['rate_id'], $rate['rate']));
-                    return $rate['rate_id'];
+                    $cached = $rate['rate_id'];
+                    $cached_resolved = true;
+                    return $cached;
                 }
             }
         } catch (Exception $e) {
@@ -574,12 +601,13 @@ function wc_tax_retrofit_get_tax_rate_id() {
     }
     
     // Étape 4 : Debug - Lister TOUS les taux disponibles
-    $all_available = $wpdb->get_results(
-        "SELECT tax_rate_id, tax_rate_country, tax_rate, tax_rate_name, tax_rate_class 
-         FROM {$table} 
-         ORDER BY tax_rate_country, tax_rate DESC 
-         LIMIT 20"
-    );
+    $all_available = $wpdb->get_results($wpdb->prepare(
+        "SELECT tax_rate_id, tax_rate_country, tax_rate, tax_rate_name, tax_rate_class
+         FROM {$table}
+         ORDER BY tax_rate_country, tax_rate DESC
+         LIMIT %d",
+        20
+    ));
     
     if (!empty($all_available)) {
         wc_tax_retrofit_log('⚠️ Aucun taux correspondant. Taux disponibles dans la base :');
@@ -599,6 +627,7 @@ function wc_tax_retrofit_get_tax_rate_id() {
     }
     
     wc_tax_retrofit_log(sprintf('❌ ERREUR : Aucun taux de TVA trouvé pour %.2f%%', $target_rate), 'error');
+    $cached_resolved = true;
     return null;
 }
 
@@ -689,13 +718,7 @@ function wc_tax_retrofit_process($dry_run = false, $offset = 0): array {
     
     $total_count = null;
     if ($offset === 0) {
-        $count_args = array(
-            'status' => wc_tax_retrofit_get_subscription_statuses(),
-            'date_created' => '<=' . wc_tax_retrofit_get_date_limit(),
-            'return' => 'ids',
-            'limit' => -1,
-        );
-        $total_count = count(wcs_get_subscriptions($count_args));
+        $total_count = wc_tax_retrofit_count_subscriptions();
         wc_tax_retrofit_log('Total abonnements : ' . $total_count);
     }
     
@@ -826,7 +849,7 @@ function wc_tax_retrofit_process($dry_run = false, $offset = 0): array {
                     }
 
                     $wpdb->query('COMMIT');
-                } catch (Exception $tx_error) {
+                } catch (\Throwable $tx_error) {
                     $wpdb->query('ROLLBACK');
                     $stats['errors']++;
                     $error = sprintf("Erreur transaction #%d : %s", $subscription_id, $tx_error->getMessage());
@@ -862,7 +885,7 @@ function wc_tax_retrofit_process($dry_run = false, $offset = 0): array {
                 }
                 $stats['updated']++;
             }
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $stats['errors']++;
             $error = sprintf("Erreur #%d : %s", $subscription_id ?? '?', $e->getMessage());
             $stats['errors_list'][] = $error;
@@ -1244,7 +1267,7 @@ function wc_tax_retrofit_admin_page(): void {
         $selected_statuses = array();
 
         if (isset($_POST['statuses']) && is_array($_POST['statuses'])) {
-            $selected_statuses = wc_tax_retrofit_validate_statuses($_POST['statuses'], array());
+            $selected_statuses = wc_tax_retrofit_validate_statuses(array_map('sanitize_text_field', $_POST['statuses']), array());
         }
 
         if (!empty($selected_statuses)) {
@@ -1859,6 +1882,8 @@ register_activation_hook(__FILE__, 'wc_tax_retrofit_activate');
 function wc_tax_retrofit_deactivate(): void {
     wc_tax_retrofit_log('Plugin désactivé - Nettoyage');
     delete_transient('wc_tax_retrofit_running');
+    delete_transient('wc_tax_retrofit_detect_date_desc');
+    delete_transient('wc_tax_retrofit_detect_date_asc');
     delete_option('wc_tax_retrofit_partial_count');
     delete_option('wc_tax_retrofit_current_offset');
     delete_option('wc_tax_retrofit_last_activity');

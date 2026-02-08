@@ -1,6 +1,6 @@
 # WooCommerce Subscriptions Tax Retrofit
 
-**Version:** 1.4.0
+**Version:** 1.4.1
 **Auteur:** Paul ARGOUD  
 **Licence:** GPL v2 or later  
 **Requires:** WordPress 5.0+, PHP 7.4+, WooCommerce, WooCommerce Subscriptions
@@ -15,7 +15,7 @@ Plugin WordPress pour migrer automatiquement des abonnements WooCommerce Subscri
 
 ### Méthode 1 : Via l'interface WordPress
 
-1. Téléchargez le fichier `woocommerce-subscription-tax-retrofit.zip`
+1. Téléchargez le fichier `wcs-tax-retrofit.zip`
 2. Allez dans **WordPress Admin → Extensions → Ajouter**
 3. Cliquez sur **Téléverser une extension**
 4. Sélectionnez le fichier ZIP
@@ -24,12 +24,12 @@ Plugin WordPress pour migrer automatiquement des abonnements WooCommerce Subscri
 
 ### Méthode 2 : Installation manuelle
 
-Téléchargez et décompressez dans `wp-content/plugins/woocommerce-subscription-tax-retrofit/`
+Téléchargez et décompressez dans `wp-content/plugins/wcs-tax-retrofit/`
 
 ### Méthode 3 : Via WP-CLI
 
 ```bash
-wp plugin install woocommerce-subscription-tax-retrofit.zip --activate
+wp plugin install wcs-tax-retrofit.zip --activate
 ```
 
 ## Configuration requise
@@ -165,7 +165,7 @@ Le plugin chargera automatiquement la bonne traduction selon la langue WordPress
 ## Structure des fichiers
 
 ```
-woocommerce-subscription-tax-retrofit/
+wcs-tax-retrofit/
 ├── wcs-tax-retrofit.php                        (Plugin principal ~2300 lignes)
 ├── uninstall.php                               (Nettoyage à la suppression)
 ├── README.md                                   (Ce fichier)

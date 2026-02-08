@@ -30,6 +30,8 @@ delete_option('wc_tax_retrofit_last_activity');
 // Transients
 delete_transient('wc_tax_retrofit_running');
 delete_transient('wc_tax_retrofit_activation_notice');
+delete_transient('wc_tax_retrofit_detect_date_desc');
+delete_transient('wc_tax_retrofit_detect_date_asc');
 
 // Transients CSV de tous les utilisateurs
 global $wpdb;

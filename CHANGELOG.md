@@ -2,6 +2,25 @@
 
 Toutes les modifications notables de ce projet sont documentées dans ce fichier.
 
+## [1.4.1] - 2026-02-08
+
+### Robustesse (P1)
+- **`catch (Exception)` → `catch (\Throwable)`** : les deux blocs try/catch dans `process()` (transaction par abonnement + boucle externe) ne capturaient que `Exception`. En PHP 7+, les `TypeError` et `Error` ne sont pas des sous-classes d'`Exception` — un crash WooCommerce de type `TypeError` laissait la transaction ouverte sans ROLLBACK. Corrigé avec `\Throwable`
+- **Comparaison float `== 0` dans `detect_no_tax_date()`** : `array_sum($taxes['total']) == 0` pouvait donner un faux positif pour des valeurs très proches de 0 (ex: 0.0001). Remplacé par `abs(array_sum($taxes['total'])) < 0.001`
+
+### Performance (P2)
+- **Cache transient `detect_no_tax_date()`** : la détection automatique de date (N+1 queries sur 50 abonnements) s'exécutait à chaque chargement de la page admin si aucune date n'était configurée. Résultat désormais caché dans un transient de 5 minutes (`wc_tax_retrofit_detect_date_desc` / `_asc`)
+- **Cache static `get_tax_rate_id()`** : la recherche du taux de TVA (jusqu'à 4 requêtes DB) n'était pas cachée, contrairement aux autres getters. Ajout d'un cache `static` avec double variable (`$cached` + `$cached_resolved`) pour supporter le cas `null`
+- **Cache static `count_subscriptions()`** : le comptage total (`wcs_get_subscriptions` avec `limit => -1`) n'était pas caché. Ajout d'un cache `static` et déduplication du code inline dans `process()` qui répliquait la même logique
+
+### Cohérence (P3)
+- **`$wpdb->prepare()` sur requête debug étape 4** : la seule requête SQL du plugin qui n'utilisait pas `prepare()` (listing des taux disponibles dans `get_tax_rate_id()`). Corrigé avec `LIMIT %d`
+- **Sanitize `$_POST['statuses']`** : l'input checkboxes des statuts n'était pas passé par `sanitize_text_field()` avant `validate_statuses()`. Risque quasi-nul (whitelist en aval) mais incohérent avec les autres inputs
+- **Nettoyage transients `detect_date_*`** : les deux nouveaux transients sont supprimés dans `deactivate()` et `uninstall.php`
+
+### Documentation (P3)
+- **README.md** : 3 occurrences de l'ancien nom `woocommerce-subscription-tax-retrofit` corrigées en `wcs-tax-retrofit` (renommage datant de la v1.3.5)
+
 ## [1.4.0] - 2026-02-08
 
 ### Internationalisation complète (P1)

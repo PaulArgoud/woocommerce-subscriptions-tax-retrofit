@@ -2,6 +2,20 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.4.3] - 2026-02-08
+
+### Robustness (P1)
+- **`catch (Exception)` → `catch (\Throwable)` in `get_tax_rate_id()`**: the try/catch around `WC_Tax::find_rates()` only caught `Exception`. A `TypeError` or `Error` thrown by WooCommerce would propagate uncaught. Fixed with `\Throwable` (consistent with the two catches in `process()` fixed in 1.4.1)
+- **Missing `batch_size` and `offset` keys in tax-rate-not-found return**: when `get_tax_rate_id()` returns `null`, `process()` returned an early error array missing `batch_size` and `offset` keys, unlike all other return paths. Code consuming `$stats['batch_size']` or `$stats['offset']` (e.g. `display_results()`) would trigger an undefined index notice
+
+### Consistency (P2)
+- **`JSON_UNESCAPED_UNICODE` in CLI simulate**: `wp tax-retrofit simulate --json` output escaped Unicode characters (e.g. French accents as `\u00e9`). Added `JSON_UNESCAPED_UNICODE` flag for readable output
+- **Plugin header Description translated to English**: the WordPress plugin header `Description` field was still in French. Rewritten in English for consistency with the rest of the project documentation
+
+### Documentation (P3)
+- **CLAUDE.md version outdated**: still referenced version 1.4.0 and "~130 translatable strings". Updated to 1.4.3 and ~290
+- **ARCHITECTURE.md string count**: file structure section still said "~130 strings". Updated to ~290
+
 ## [1.4.2] - 2026-02-08
 
 ### Consistency (P2)

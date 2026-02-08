@@ -1,8 +1,5 @@
 # WooCommerce Subscriptions Tax Retrofit
 
-**Version:** 1.4.2
-**Author:** Paul ARGOUD
-**License:** GPL v2 or later
 **Requires:** WordPress 5.0+, PHP 7.4+, WooCommerce, WooCommerce Subscriptions
 
 ## Description
@@ -13,32 +10,21 @@ WordPress plugin that automatically migrates WooCommerce Subscriptions stored as
 
 ## Installation
 
-### Method 1: Via the WordPress admin
+### Via the WordPress admin
 
-1. Download `wcs-tax-retrofit.zip`
-2. Go to **WordPress Admin → Plugins → Add New**
-3. Click **Upload Plugin**
-4. Select the ZIP file
-5. Click **Install Now**
-6. Activate the plugin
+1. Download the [latest release](../../releases/latest) ZIP
+2. Go to **WordPress Admin → Plugins → Add New → Upload Plugin**
+3. Select the ZIP file, install and activate
 
-### Method 2: Manual installation
+### Manual installation
 
 Download and extract into `wp-content/plugins/wcs-tax-retrofit/`
 
-### Method 3: Via WP-CLI
+### Via WP-CLI
 
 ```bash
 wp plugin install wcs-tax-retrofit.zip --activate
 ```
-
-## Requirements
-
-- WordPress 5.0 or higher
-- PHP 7.4 or higher
-- WooCommerce installed and activated
-- WooCommerce Subscriptions installed and activated
-- (Optional) WP-CLI for command-line usage
 
 ## Usage
 
@@ -96,21 +82,18 @@ wp tax-retrofit reset
 - Detailed WooCommerce logs
 - CSV export of all modifications
 
-### WP-CLI (since v1.2.9)
+### WP-CLI
 - Full command-line support
 - Ideal for large databases (no PHP timeout)
 - Scriptable and automatable (CI/CD, cron)
 - JSON output for parsing
-- 5 commands available
 
 ### Internationalization
 - Multilingual interface (French, English)
-- POT file included for new translations
-- All strings are translatable (~290 entries)
+- POT file included for new translations (~290 entries)
 
 ### For developers
 - 5 PHP hooks available (4 filters + 1 action)
-- Commented code following WordPress standards (WPCS)
 - Single PHP file (~2300 lines)
 
 ## Available hooks
@@ -148,45 +131,14 @@ add_action('wc_tax_retrofit_after_process', function($stats, $dry_run) {
 
 ## Translations
 
-The plugin ships with:
-- French (fr_FR) — primary language
-- English (en_US) — full translation
+The plugin ships with French (fr_FR) and English (en_US).
 
 **To create a new translation:**
-1. Copy the `languages/wcs-tax-retrofit.pot` file
-2. Open it with Poedit (free)
-3. Create a new catalog for your language
-4. Translate the strings (~290 entries)
-5. Save: Poedit automatically generates the .po and .mo files
-6. Place them in `languages/`
+1. Copy `languages/wcs-tax-retrofit.pot`
+2. Open it with [Poedit](https://poedit.net/) and create a new catalog for your language
+3. Translate, save (generates .po + .mo), and place them in `languages/`
 
 The plugin automatically loads the correct translation based on the WordPress locale.
-
-## File structure
-
-```
-wcs-tax-retrofit/
-├── wcs-tax-retrofit.php                        (Main plugin file ~2300 lines)
-├── uninstall.php                               (Cleanup on deletion)
-├── README.md                                   (This file)
-├── CHANGELOG.md                                (Version history)
-├── LICENSE                                     (GPL v2 license)
-└── languages/
-    ├── wcs-tax-retrofit.pot                   (Translation template)
-    ├── wcs-tax-retrofit-fr_FR.po              (French translation)
-    └── wcs-tax-retrofit-en_US.po              (English translation)
-```
-
-## Support
-
-**This plugin is provided "as is", with no warranty and no technical support.**
-
-- No support
-- No warranty
-- Use at your own risk
-- Open source (GPL v2 license)
-- You are free to modify it
-- Contributions welcome
 
 ## Warning
 
@@ -194,15 +146,7 @@ wcs-tax-retrofit/
 
 This plugin directly modifies your WooCommerce database. Although it has been extensively tested, a backup is ESSENTIAL before any migration.
 
-## Tested with
-
-- WordPress 5.0 through 6.4+
-- PHP 7.4, 8.0, 8.1, 8.2
-- WooCommerce 7.0 through 8.3+
-- Over 500 subscriptions tested
-- All tax rates (20%, 10%, 5.5%, etc.)
-- Resume after timeout tested
-- Full WP-CLI test coverage
+This plugin is provided "as is", with no warranty and no technical support. Use at your own risk.
 
 ## WP-CLI recipes
 
@@ -210,8 +154,6 @@ This plugin directly modifies your WooCommerce database. Although it has been ex
 
 ```bash
 #!/bin/bash
-# Automated migration script
-
 wp tax-retrofit config --tax-rate=20 --date-limit=2024-01-01
 RESULT=$(wp tax-retrofit simulate --json)
 ERRORS=$(echo $RESULT | jq -r '.errors')
@@ -228,40 +170,5 @@ fi
 ### Scheduled migration (cron)
 
 ```bash
-# Add to crontab
 0 2 * * * cd /var/www/html && wp tax-retrofit migrate --yes-i-have-a-backup --skip-confirm >> /var/log/tax-retrofit.log 2>&1
 ```
-
-### Batch migration (large database)
-
-```bash
-#!/bin/bash
-# Batch migration with automatic resume
-
-OFFSET=0
-while true; do
-    echo "Processing offset $OFFSET..."
-    wp tax-retrofit migrate --yes-i-have-a-backup --skip-confirm --offset=$OFFSET
-
-    if wp tax-retrofit stats | grep -q "has_more.*false"; then
-        echo "Migration complete!"
-        break
-    fi
-
-    OFFSET=$((OFFSET + 100))
-    sleep 2
-done
-```
-
-## License
-
-GPL v2 or later — https://www.gnu.org/licenses/gpl-2.0.html
-
-## Author
-
-Paul ARGOUD
-https://paul.argoud.net
-
-## Changelog
-
-See CHANGELOG.md for the detailed version history.

@@ -2,8 +2,8 @@
 /**
  * Plugin Name: WooCommerce Subscriptions Tax Retrofit
  * Plugin URI: https://paul.argoud.net
- * Description: Migre vos abonnements WooCommerce Subscriptions de TTC (sans TVA) vers HT + TVA, en conservant le prix TTC payé par vos clients. Indispensable après un passage au régime de TVA.
- * Version: 1.4.2
+ * Description: Retrofits existing WooCommerce Subscriptions with proper tax breakdown (pre-tax + VAT) while preserving the total price paid by customers. Essential after crossing the VAT registration threshold.
+ * Version: 1.4.3
  * Author: Paul ARGOUD
  * Author URI: https://paul.argoud.net
  * Requires at least: 5.0
@@ -115,7 +115,7 @@ function wc_tax_retrofit_check_dependencies(): bool {
     return class_exists('WooCommerce') && function_exists('wcs_get_subscriptions');
 }
 
-define('WC_TAX_RETROFIT_VERSION', '1.4.2');
+define('WC_TAX_RETROFIT_VERSION', '1.4.3');
 define('WC_TAX_RETROFIT_BATCH_SIZE', 100);
 define('WC_TAX_RETROFIT_TOLERANCE', 0.01);
 
@@ -595,7 +595,7 @@ function wc_tax_retrofit_get_tax_rate_id() {
                     return $cached;
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             wc_tax_retrofit_log('Erreur lors de l\'appel WC_Tax::find_rates : ' . $e->getMessage());
         }
     }
@@ -695,7 +695,7 @@ function wc_tax_retrofit_process($dry_run = false, $offset = 0): array {
         delete_transient($lock_key);
         wc_tax_retrofit_log('ERREUR : Taux de TVA introuvable dans WooCommerce', 'error');
         return array(
-            'total' => 0, 'updated' => 0, 'skipped' => 0, 'errors' => 1,
+            'total' => 0, 'batch_size' => 0, 'offset' => 0, 'updated' => 0, 'skipped' => 0, 'errors' => 1,
             'details' => array(),
             'errors_list' => array(__('Taux de TVA introuvable dans WooCommerce. Configurez un taux dans WooCommerce → Réglages → Taxes.', 'wcs-tax-retrofit')),
             'tolerance_warnings' => array(), 'has_more' => false, 'csv_data' => array()
@@ -2171,7 +2171,7 @@ if (defined('WP_CLI') && WP_CLI) {
                 $all_stats['details'] = $total_details;
                 $all_stats['csv_data'] = $total_csv_data;
                 $all_stats['errors_list'] = $total_errors_list;
-                WP_CLI::line(json_encode($all_stats, JSON_PRETTY_PRINT));
+                WP_CLI::line(json_encode($all_stats, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
             } else {
                 WP_CLI::line('');
                 WP_CLI::success(__('Simulation terminée', 'wcs-tax-retrofit'));

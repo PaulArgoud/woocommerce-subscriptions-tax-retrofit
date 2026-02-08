@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Subscriptions Tax Retrofit
  * Plugin URI: https://paul.argoud.net
  * Description: Migre vos abonnements WooCommerce Subscriptions de TTC (sans TVA) vers HT + TVA, en conservant le prix TTC payé par vos clients. Indispensable après un passage au régime de TVA.
- * Version: 1.4.1
+ * Version: 1.4.2
  * Author: Paul ARGOUD
  * Author URI: https://paul.argoud.net
  * Requires at least: 5.0
@@ -115,7 +115,7 @@ function wc_tax_retrofit_check_dependencies(): bool {
     return class_exists('WooCommerce') && function_exists('wcs_get_subscriptions');
 }
 
-define('WC_TAX_RETROFIT_VERSION', '1.4.1');
+define('WC_TAX_RETROFIT_VERSION', '1.4.2');
 define('WC_TAX_RETROFIT_BATCH_SIZE', 100);
 define('WC_TAX_RETROFIT_TOLERANCE', 0.01);
 
@@ -1021,29 +1021,29 @@ function wc_tax_retrofit_display_results($stats, $dry_run = false): void {
     $mode_label = $dry_run ? '🔍 ' . __('SIMULATION', 'wcs-tax-retrofit') : '✅ ' . __('MISE À JOUR', 'wcs-tax-retrofit');
     $mode_color = $dry_run ? '#2196f3' : '#46b450';
 
-    echo "<div style='background:#fff;padding:20px;margin:20px;border-left:4px solid {$mode_color}'><h2>" . esc_html($mode_label) . "</h2>";
+    echo "<div style='background:#fff;padding:20px;margin:20px;border-left:4px solid " . esc_attr($mode_color) . "'><h2>" . esc_html($mode_label) . "</h2>";
 
     if (isset($stats['total']) && $stats['total'] !== null && $stats['total'] > 0) {
-        $processed = $stats['offset'] + $stats['batch_size'];
-        $percent = min(100, round(($processed / $stats['total']) * 100));
+        $processed = intval($stats['offset']) + intval($stats['batch_size']);
+        $percent = min(100, round(($processed / intval($stats['total'])) * 100));
 
         echo "<div style='margin:20px 0'>";
         echo "<div style='background:#f0f0f0;border-radius:10px;height:30px;position:relative;overflow:hidden'>";
-        echo "<div style='background:{$mode_color};height:100%;width:{$percent}%;transition:width 0.3s'></div>";
+        echo "<div style='background:" . esc_attr($mode_color) . ";height:100%;width:" . intval($percent) . "%;transition:width 0.3s'></div>";
         echo "<div style='position:absolute;top:0;left:0;right:0;text-align:center;line-height:30px;font-weight:bold;color:#333'>";
-        echo "{$processed} / {$stats['total']} " . esc_html__('abonnements traités', 'wcs-tax-retrofit') . " ({$percent}%)";
+        echo intval($processed) . " / " . intval($stats['total']) . " " . esc_html__('abonnements traités', 'wcs-tax-retrofit') . " (" . intval($percent) . "%)";
         echo "</div></div></div>";
     }
 
     if (isset($stats['total']) && $stats['total'] !== null) {
-        echo "<p><strong>" . esc_html__('Total :', 'wcs-tax-retrofit') . "</strong> {$stats['total']}</p><p><strong>" . esc_html__('Batch :', 'wcs-tax-retrofit') . "</strong> {$stats['batch_size']} (offset: {$stats['offset']})</p>";
+        echo "<p><strong>" . esc_html__('Total :', 'wcs-tax-retrofit') . "</strong> " . intval($stats['total']) . "</p><p><strong>" . esc_html__('Batch :', 'wcs-tax-retrofit') . "</strong> " . intval($stats['batch_size']) . " (offset: " . intval($stats['offset']) . ")</p>";
     } else {
-        echo "<p><strong>" . esc_html__('Batch :', 'wcs-tax-retrofit') . "</strong> {$stats['batch_size']}</p>";
+        echo "<p><strong>" . esc_html__('Batch :', 'wcs-tax-retrofit') . "</strong> " . intval($stats['batch_size']) . "</p>";
     }
 
-    echo "<p><strong>✓ " . esc_html__('Mis à jour :', 'wcs-tax-retrofit') . "</strong> <span style='color:green;font-weight:bold'>{$stats['updated']}</span></p>";
-    echo "<p><strong>⊗ " . esc_html__('Ignorés :', 'wcs-tax-retrofit') . "</strong> {$stats['skipped']}</p>";
-    if ($stats['errors'] > 0) echo "<p style='color:#d63638'><strong>✗ " . esc_html__('Erreurs :', 'wcs-tax-retrofit') . "</strong> {$stats['errors']}</p>";
+    echo "<p><strong>✓ " . esc_html__('Mis à jour :', 'wcs-tax-retrofit') . "</strong> <span style='color:green;font-weight:bold'>" . intval($stats['updated']) . "</span></p>";
+    echo "<p><strong>⊗ " . esc_html__('Ignorés :', 'wcs-tax-retrofit') . "</strong> " . intval($stats['skipped']) . "</p>";
+    if ($stats['errors'] > 0) echo "<p style='color:#d63638'><strong>✗ " . esc_html__('Erreurs :', 'wcs-tax-retrofit') . "</strong> " . intval($stats['errors']) . "</p>";
 
     if (!empty($stats['tolerance_warnings'])) {
         echo "<div style='background:#fff3cd;padding:15px;margin:15px 0;border-left:4px solid #ffc107'>";
@@ -1075,11 +1075,11 @@ function wc_tax_retrofit_display_results($stats, $dry_run = false): void {
             $eta_minutes = floor($eta_seconds / 60);
             $eta_sec_remain = $eta_seconds % 60;
 
-            echo "<p><strong>" . esc_html__('Restant :', 'wcs-tax-retrofit') . "</strong> ~{$remaining} " . esc_html__('abonnements', 'wcs-tax-retrofit');
+            echo "<p><strong>" . esc_html__('Restant :', 'wcs-tax-retrofit') . "</strong> ~" . intval($remaining) . " " . esc_html__('abonnements', 'wcs-tax-retrofit');
             if ($eta_minutes > 0) {
-                echo " | <strong>" . esc_html__('Temps estimé :', 'wcs-tax-retrofit') . "</strong> ~{$eta_minutes}min {$eta_sec_remain}s";
+                echo " | <strong>" . esc_html__('Temps estimé :', 'wcs-tax-retrofit') . "</strong> ~" . intval($eta_minutes) . "min " . intval($eta_sec_remain) . "s";
             } else {
-                echo " | <strong>" . esc_html__('Temps estimé :', 'wcs-tax-retrofit') . "</strong> ~{$eta_sec_remain}s";
+                echo " | <strong>" . esc_html__('Temps estimé :', 'wcs-tax-retrofit') . "</strong> ~" . intval($eta_sec_remain) . "s";
             }
             echo "</p>";
         }
@@ -1089,7 +1089,7 @@ function wc_tax_retrofit_display_results($stats, $dry_run = false): void {
 
         echo "<form method='post' id='continue-batch-form'>";
         wp_nonce_field('wc_tax_retrofit_nonce');
-        echo "<input type='hidden' name='batch_offset' value='{$next}'>";
+        echo "<input type='hidden' name='batch_offset' value='" . esc_attr($next) . "'>";
         echo $dry_run ? "<input type='hidden' name='dry_run' value='yes'>" : "<input type='hidden' name='confirm_update' value='yes'>";
         echo "<button type='submit' class='button button-primary button-large'>➡️ {$continue_label}</button>";
         echo " <span id='countdown-timer'>{$countdown_text} <strong>3</strong>s...</span>";
@@ -1282,19 +1282,12 @@ function wc_tax_retrofit_admin_page(): void {
         if (isset($_POST['tolerance'])) {
             $tolerance_input = sanitize_text_field($_POST['tolerance']);
 
-            if (is_numeric($tolerance_input)) {
-                $validated_tolerance = wc_tax_retrofit_validate_tolerance(floatval($tolerance_input));
-
-                $input_float = floatval($tolerance_input);
-                if ($input_float >= 0.001 && $input_float <= 1.0) {
-                    update_option('wc_tax_retrofit_tolerance_setting', $validated_tolerance);
-                    wc_tax_retrofit_log('Tolérance modifiée : ' . $validated_tolerance . '€');
-                } else {
-                    echo '<div class="notice notice-error is-dismissible" style="padding:15px;margin:20px 0"><p><strong>✗ ' . esc_html__('Erreur :', 'wcs-tax-retrofit') . '</strong> ' . esc_html__('La tolérance doit être un nombre entre 0.001 et 1€', 'wcs-tax-retrofit') . '</p></div>';
-                    $settings_has_error = true;
-                }
+            $validated_tolerance = wc_tax_retrofit_validate_float($tolerance_input, 0.001, 1.0);
+            if ($validated_tolerance !== false) {
+                update_option('wc_tax_retrofit_tolerance_setting', $validated_tolerance);
+                wc_tax_retrofit_log('Tolérance modifiée : ' . $validated_tolerance . '€');
             } else {
-                echo '<div class="notice notice-error is-dismissible" style="padding:15px;margin:20px 0"><p><strong>✗ ' . esc_html__('Erreur :', 'wcs-tax-retrofit') . '</strong> ' . esc_html__('La tolérance doit être un nombre valide', 'wcs-tax-retrofit') . '</p></div>';
+                echo '<div class="notice notice-error is-dismissible" style="padding:15px;margin:20px 0"><p><strong>✗ ' . esc_html__('Erreur :', 'wcs-tax-retrofit') . '</strong> ' . esc_html__('La tolérance doit être un nombre entre 0.001 et 1€', 'wcs-tax-retrofit') . '</p></div>';
                 $settings_has_error = true;
             }
         }
@@ -1351,10 +1344,10 @@ function wc_tax_retrofit_admin_page(): void {
                 $diff = abs($rate->tax_rate - $target);
                 $match = $diff < 0.01;
                 $style = $match ? 'background:#d4edda;font-weight:bold' : '';
-                echo "<tr style='$style'>";
+                echo "<tr style='" . esc_attr($style) . "'>";
                 echo "<td style='border:1px solid #ddd;padding:8px'>" . esc_html($rate->tax_rate_id) . "</td>";
                 echo "<td style='border:1px solid #ddd;padding:8px'>" . esc_html($rate->tax_rate_country) . "</td>";
-                echo "<td style='border:1px solid #ddd;padding:8px'>" . esc_html($rate->tax_rate) . "% " . ($match ? '✅ ' . esc_html__('CORRESPOND', 'wcs-tax-retrofit') : '(' . esc_html__('différence:', 'wcs-tax-retrofit') . ' ' . $diff . '%)') . "</td>";
+                echo "<td style='border:1px solid #ddd;padding:8px'>" . esc_html($rate->tax_rate) . "% " . ($match ? '✅ ' . esc_html__('CORRESPOND', 'wcs-tax-retrofit') : '(' . esc_html__('différence:', 'wcs-tax-retrofit') . ' ' . esc_html(number_format($diff, 2)) . '%)') . "</td>";
                 echo "<td style='border:1px solid #ddd;padding:8px'>" . esc_html($rate->tax_rate_name) . "</td>";
                 echo "<td style='border:1px solid #ddd;padding:8px'>" . esc_html($rate->tax_rate_class ?: '(standard)') . "</td>";
                 echo "</tr>";
@@ -1542,7 +1535,7 @@ function wc_tax_retrofit_admin_page(): void {
                                 echo '<select name="tax_rate_id" id="tax_rate_id" class="regular-text">';
                                 
                                 foreach ($all_rates as $rate_id => $rate_data) {
-                                    $selected = ($current_rate_id == $rate_id) ? 'selected' : '';
+                                    $selected = ((int) $current_rate_id === (int) $rate_id) ? 'selected' : '';
                                     echo sprintf(
                                         '<option value="%d" %s>%s</option>',
                                         esc_attr($rate_id),

@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Subscriptions Tax Retrofit
  * Plugin URI: https://paul.argoud.net
  * Description: Retrofits existing WooCommerce Subscriptions with proper tax breakdown (pre-tax + VAT) while preserving the total price paid by customers. Essential after crossing the VAT registration threshold.
- * Version: 1.4.3
+ * Version: 1.4.4
  * Author: Paul ARGOUD
  * Author URI: https://paul.argoud.net
  * Requires at least: 5.0
@@ -115,7 +115,7 @@ function wc_tax_retrofit_check_dependencies(): bool {
     return class_exists('WooCommerce') && function_exists('wcs_get_subscriptions');
 }
 
-define('WC_TAX_RETROFIT_VERSION', '1.4.3');
+define('WC_TAX_RETROFIT_VERSION', '1.4.4');
 define('WC_TAX_RETROFIT_BATCH_SIZE', 100);
 define('WC_TAX_RETROFIT_TOLERANCE', 0.01);
 
@@ -1443,7 +1443,7 @@ function wc_tax_retrofit_admin_page(): void {
         echo "<form method='post' style='display:inline-block;margin-right:10px'>";
         wp_nonce_field('wc_tax_retrofit_nonce');
         echo "<input type='hidden' name='confirm_update' value='yes'>";
-        echo "<input type='hidden' name='batch_offset' value='{$interrupted_offset}'>";
+        echo "<input type='hidden' name='batch_offset' value='" . intval($interrupted_offset) . "'>";
         echo "<button type='submit' class='button button-primary button-large'>▶️ " . esc_html(sprintf(__('Reprendre la migration (%d%%)', 'wcs-tax-retrofit'), $percent)) . "</button>";
         echo "</form>";
         
@@ -1640,7 +1640,7 @@ function wc_tax_retrofit_admin_page(): void {
                             foreach ($all_statuses as $status_key => $status_label) {
                                 $checked = in_array($status_key, $current_statuses) ? 'checked' : '';
                                 echo '<label style="display:block;margin:5px 0">';
-                                echo '<input type="checkbox" name="statuses[]" value="' . esc_attr($status_key) . '" ' . $checked . '> ';
+                                echo '<input type="checkbox" name="statuses[]" value="' . esc_attr($status_key) . '" ' . esc_attr($checked) . '> ';
                                 echo esc_html($status_label);
                                 echo '</label>';
                             }

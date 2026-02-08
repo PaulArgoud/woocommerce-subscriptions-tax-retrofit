@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.4.4] - 2026-02-08
+
+### Consistency (P2)
+- **Unescaped `$interrupted_offset` in resume form**: `get_option('wc_tax_retrofit_current_offset')` output was interpolated directly in an HTML hidden input `value` attribute without `intval()`. Internal integer with no user input path, but inconsistent with the systematic escaping applied in v1.4.2. Fixed with `intval()`
+- **Unescaped `$checked` in status checkboxes**: hardcoded `'checked'` / `''` string output without `esc_attr()` in the subscription status fieldset, while the adjacent `$status_key` was already escaped. Fixed with `esc_attr()`
+
 ## [1.4.3] - 2026-02-08
 
 ### Robustness (P1)
